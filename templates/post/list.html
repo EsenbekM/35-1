@@ -1,3 +1,15 @@
+<!-- 
+    extends 'index.html' - это наследование от шаблона index.html
+    {% block content %} - это блок, который мы можем расширить в других шаблонах
+    {% endblock %} - это конец блока
+
+    в данном случае мы расширяем шаблон index.html и переопределяем блок content
+    в котором выводим список постов из переменной posts (переданной из контекста в функции posts_list_view)
+
+    В шаблонизаторе можно использовать условные операторы, циклы, фильтры и т.д.
+    https://docs.djangoproject.com/en/3.2/ref/templates/builtins/
+ -->
+
 {% extends 'index.html' %}
 
 {% block content %}
