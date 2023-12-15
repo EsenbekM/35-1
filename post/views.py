@@ -18,22 +18,20 @@ from django.http import HttpResponse
 from post.models import Post
 
 
-def test_view(request):
+def main_view(request):
     if request.method == 'GET': # GET - получение данных 
-        posts = Post.objects.all() # SELECT * FROM post_post; return QuerySet
-        print(posts)
-        for post in posts:
-            print(post.title)
-            print(post.text)
-            print(post.rate)
-            print(post.created_at)
-            print(post.updated_at)
-            print(post.image)
-            print(post.id)
-            
-        return HttpResponse('Test views')
-    
-
-def hello_view(request):
-    if request.method == 'GET':
         return render(request, 'index.html')
+
+
+def post_list_view(request):
+    if request.method == 'GET':
+        # 1 - получить все посты из базы данных
+        posts = Post.objects.all() # QuerySet
+        
+        # 2 - передать посты в шаблон
+        context = {
+            'posts': posts,
+        }
+
+        return render(request, 'post/list.html', context=context)
+    

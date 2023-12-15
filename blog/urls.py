@@ -10,11 +10,11 @@ path - функция для создания маршрута.
 """
 from django.contrib import admin
 from django.urls import path
-from post.views import test_view, hello_view
+from post.views import main_view, post_list_view
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', test_view, name='test'),
-    path('hello/', hello_view),
+    path('', main_view),
+    path('posts/', post_list_view),
 ]
