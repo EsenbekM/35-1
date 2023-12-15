@@ -10,13 +10,27 @@ HTTPs - защищенный протокол передачи гипертек�
 Method - метод. GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD.
 
 render - функция, которая принимает запрос, имя шаблона и словарь с данными и возвращает ответ.
+
+QuerySet - набор объектов, полученных в результате запроса к базе данных.
 '''
 from django.shortcuts import render
 from django.http import HttpResponse
+from post.models import Post
 
 
 def test_view(request):
     if request.method == 'GET': # GET - получение данных 
+        posts = Post.objects.all() # SELECT * FROM post_post; return QuerySet
+        print(posts)
+        for post in posts:
+            print(post.title)
+            print(post.text)
+            print(post.rate)
+            print(post.created_at)
+            print(post.updated_at)
+            print(post.image)
+            print(post.id)
+            
         return HttpResponse('Test views')
     
 
