@@ -1,14 +1,3 @@
-<!-- 
-    extends 'index.html' - это наследование от шаблона index.html
-    {% block content %} - это блок, который мы можем расширить в других шаблонах
-    {% endblock %} - это конец блока
-
-    в данном случае мы расширяем шаблон index.html и переопределяем блок content
-    в котором выводим список постов из переменной posts (переданной из контекста в функции posts_list_view)
-
-    В шаблонизаторе можно использовать условные операторы, циклы, фильтры и т.д.
-    https://docs.djangoproject.com/en/3.2/ref/templates/builtins/
- -->
 
 {% extends 'index.html' %}
 
@@ -23,6 +12,13 @@
             <h5 class="card-title">{{ post.title }} {{ post.rate }}</h5>
             <p class="card-text">{{ post.text }}</p>
             <p class="card-text">{{ post.created_at }}</p>
+            {% for hashtag in post.hashtags.all %}
+                <a class="btn btn-primary" href="#">
+                    <p>
+                        #{{ hashtag.name }}
+                    </p>
+                </a>
+            {% endfor %}
 
             <a href="#" class="btn btn-primary">View detail</a>
         </div>
