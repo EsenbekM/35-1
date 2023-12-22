@@ -1,0 +1,32 @@
+
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+<h1>Post Detail</h1>
+
+<h2>{{ post.title }} {{ post.rate }}</h2>
+
+<p>{{ post.text }}</p>
+
+<img src="/media/{{ post.image }}">
+
+<p>{{ post.created_at }}</p>
+
+{% for hashtag in post.hashtags.all %}
+    <a class="btn btn-primary" href="#">
+        <p>
+            #{{ hashtag.name }}
+        </p>
+    </a>
+{% endfor %}
+
+{% for comment in post.comments.all %}
+    <p>
+        {{ comment.text }}
+    </p>
+{% endfor %}
+
+
+{% endblock %}

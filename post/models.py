@@ -85,6 +85,24 @@ class Post(BaseModel): # Класс модели
         verbose_name_plural = 'Посты' # Название модели во множественном числе
 
 
+class Comments(BaseModel):
+    post = models.ForeignKey(
+        "post.Post", # Поле для связи с другой моделью
+        on_delete=models.CASCADE, # Политика удаления записи в связанной модели (CASCADE - удалить все записи, которые связаны с этой записью)
+        verbose_name="Пост", # Название поля в форме (админка, форма регистрации, форма авторизации)
+        related_name="comments" # Поле для обратной связи (по умолчанию appname_classname_set (post_comments_set))
+    )
+    text = models.TextField(null=True, blank=True, verbose_name="Текст") # Поле для ввода текста без ограничения
+
+    def __str__(self) -> str:
+        return f"{self.text}"
+
+    class Meta: # Мета класс - Это класс, который содержит дополнительную информацию о модели
+        db_table = 'comments' # Название таблицы в базе данных (по умолчанию appname_classname (post_comments)) 
+        verbose_name = 'Комментарий' # Название модели в единственном числе
+        verbose_name_plural = 'Комментарии' # Название модели во множественном числе
+
+
 # class PostInfo(models.Model):
 #     post = models.OneToOneField( # Поле для связи с другой моделью
 #         Post, # Поле для связи с другой моделью
@@ -126,24 +144,7 @@ class Post(BaseModel): # Класс модели
 #         db_table = 'post_hashtags' # Название таблицы в базе данных (по умолчанию appname_classname (post_posthastegs)) 
 #         verbose_name = 'Хэштег поста' # Название модели в единственном числе
 #         verbose_name_plural = 'Хэштеги постов' # Название модели во множественном числе
-
-class Comments(BaseModel):
-    post = models.ForeignKey(
-        "post.Post", # Поле для связи с другой моделью
-        on_delete=models.CASCADE, # Политика удаления записи в связанной модели (CASCADE - удалить все записи, которые связаны с этой записью)
-        verbose_name="Пост", # Название поля в форме (админка, форма регистрации, форма авторизации)
-        related_name="comments" # Поле для обратной связи (по умолчанию appname_classname_set (post_comments_set))
-    )
-    text = models.TextField(null=True, blank=True, verbose_name="Текст") # Поле для ввода текста без ограничения
-
-    def __str__(self) -> str:
-        return f"{self.text}"
-
-    class Meta: # Мета класс - Это класс, который содержит дополнительную информацию о модели
-        db_table = 'comments' # Название таблицы в базе данных (по умолчанию appname_classname (post_comments)) 
-        verbose_name = 'Комментарий' # Название модели в единственном числе
-        verbose_name_plural = 'Комментарии' # Название модели во множественном числе
-
+        
 
 # class Like(BaseModel):
 #     pass

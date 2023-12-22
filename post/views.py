@@ -58,6 +58,25 @@ def post_list_view(request):
             context=context # словарь с данными (dict) параметр необязательный
         )
     
+    
+def post_detail_view(request, post_id):
+    if request.method == 'GET':
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return render(request, '404.html')
+        
+        context = {
+            'post': post,
+        }
+
+        return render(
+            request, # запрос от пользователя (объект HttpRequest) параметр обязательный
+            'post/detail.html',  # имя шаблона (строка) параметр обязательный
+            context=context # словарь с данными (dict) параметр необязательный
+        )
+
+
 def hashtag_list_view(request):
     if request.method == 'GET':
         # 1 - получить все хэштеги из базы данных
