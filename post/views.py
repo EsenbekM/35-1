@@ -31,9 +31,10 @@ objects - менеджер модели. Менеджер модели - это 
 (подробнее в документации https://docs.djangoproject.com/en/3.2/ref/models/querysets/)
 
 '''
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from post.models import Post, Comments, Hashtag
+from post.forms import PostForm, PostForm2
 
 
 def main_view(request):
@@ -58,7 +59,7 @@ def post_list_view(request):
             context=context # словарь с данными (dict) параметр необязательный
         )
     
-    
+
 def post_detail_view(request, post_id):
     if request.method == 'GET':
         try:
@@ -93,3 +94,35 @@ def hashtag_list_view(request):
             'hashtag/list.html',  # имя шаблона (строка) параметр обязательный
             context=context # словарь с данными (dict) параметр необязательный
         )
+    
+
+def posts_create_view(requests):
+    if requests.method == 'GET':
+        # отобразить форму
+        context = {
+            'form': PostForm2,
+        }
+        return render(requests, 'post/create.html', context=context)
+
+    if requests.method == 'POST': # создать пост
+        # 1 - получить данные из запроса
+        form = PostForm2(requests.POST, requests.FILES)
+
+        # 2 - валидация данных
+        if form.is_valid(): # True если форма валидна, False если форма не валидна
+            # 3 - создать пост
+            # cleaned_data - это словарь с данными, которые прошли валидацию
+            
+            # Если это Form, Post.objects.create(**form.cleaned_data)
+            # Post.objects.create(**form.cleaned_data)
+
+            # Если это ModelForm, form.save()
+            form.save()
+
+            return redirect('/posts/')
+        else:
+            context = {
+                'form': form,
+            }
+
+            return render(requests, 'post/create.html', context=context)
