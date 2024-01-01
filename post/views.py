@@ -117,7 +117,7 @@ def posts_create_view(requests):
             # Post.objects.create(**form.cleaned_data)
 
             # Если это ModelForm, form.save()
-            form.save()
+            form.save() # создает пост в базе данных и возвращает объект поста (Post)
 
             return redirect('/posts/')
         else:
