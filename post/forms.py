@@ -31,9 +31,10 @@ commit - параметр, который указывает, нужно ли с
 
 False ставится в том случае, если нужно добавить дополнительную логику при сохранении данных в базу данных
 '''
+from typing import Any
 from django import forms
 
-from post.models import Post
+from post.models import Post, Comments
 
 
 class PostForm(forms.Form):
@@ -98,4 +99,31 @@ class PostForm2(forms.ModelForm):
     #     post.author = self.author
     #     post.save()
     #     return post
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ('text',)
+        labels = {
+            'text': 'Текст комментария',
+        }
+        help_texts = {
+            'text': 'Введите текст комментария',
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        text = cleaned_data.get('text')
+
+        if text and len(text) > 200:
+            raise forms.ValidationError('Длина комментария не должна превышать 200 символов')
+
+        if not text:
+            raise forms.ValidationError('Комментарий не должен быть пустым')
         
+        if len(text) < 3:
+            raise forms.ValidationError('Длина комментария должна быть больше 3 символов')
+        
+        return cleaned_data

@@ -22,11 +22,22 @@
     </a>
 {% endfor %}
 
+<a href="update/" class="btn btn-primary">Update</a>
+
+
 {% for comment in post.comments.all %}
     <p>
         {{ comment.text }}
     </p>
 {% endfor %}
 
+
+<form action="comment/create/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">
+        Submit
+    </button>
+</form>
 
 {% endblock %}

@@ -48,7 +48,7 @@ def login_view(request):
         context = {
             'form': LoginForm,
         }
-        print(request.user) # request.user - объект пользователя, который сделал запрос
+        # print(request.user) # request.user - объект пользователя, который сделал запрос
         return render(request, 'user/login.html', context=context)
     
     elif request.method == 'POST':
