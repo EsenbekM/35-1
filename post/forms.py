@@ -104,7 +104,7 @@ class PostForm2(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comments
-        fields = ('text',)
+        fields = ('text', 'post')
         labels = {
             'text': 'Текст комментария',
         }

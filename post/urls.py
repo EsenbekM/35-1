@@ -11,4 +11,9 @@ urlpatterns = [
     path('posts/<int:post_id>/update/', views.post_update_view),
     path('posts/<int:post_id>/comment/create/', views.comment_create_view),
     path('hashtags/', views.hashtag_list_view),
+
+    path('comments/', views.CommentListView.as_view()),
+    path('comments/create/', views.CommentCreateView.as_view()),
+    path('comments/<int:comment_id>/', views.CommentDetailView.as_view()),
+    path('comments/<int:comment_id>/update/', views.CommentUpdateView.as_view()),
 ]

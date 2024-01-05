@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+{{ comment.text }}
+
+{{ comment.created_at }}
+
+<a href="update/">
+    <button>
+        Update Comment
+    </button>
+</a>
+
+{% endblock %}

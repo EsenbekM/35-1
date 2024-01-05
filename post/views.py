@@ -90,14 +90,72 @@ list[start:end] - срез списка, который содержит объ�
 
 query parameters - параметры запроса. 
 Параметры запроса - это часть URL, которая начинается с ? и содержит пары ключ=значение, разделенные &.
+
+FBV - Function Based View - представление, основанное на функциях.
+CBV - Class Based View - представление, основанное на классах.
 '''
+from typing import Any
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.db.models import Q
 from django.conf import settings
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from post.models import Post, Comments, Hashtag
 from post.forms import PostForm, PostForm2, CommentForm
+
+
+
+class CommentListView(ListView):
+    model = Comments
+    template_name = 'comment/list.html' # default: <app_label>/<model_name>_list.html
+    context_object_name = 'comments' # default: <model_name>_list
+
+    def get_queryset(self):
+        search = self.request.GET.get('search')
+
+        if search:
+            queryset = Comments.objects.filter(
+                text__icontains=search
+            )
+        else:
+            queryset = Comments.objects.all()
+
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        # 1 Достаем контекст от родителя (существующие данные)
+        context = super().get_context_data(**kwargs) # Dictionary alreay has
+        # 2 Добавляем новые данные 
+        context['message'] = 'Hello world!'
+        # 3 Возвращаем обновленный контекст
+        return context
+    
+
+class CommentDetailView(DetailView):
+    model = Comments
+    template_name = 'comment/detail.html' # default: <app_label>/<model_name>_detail.html
+    context_object_name = 'comment' # default: <model_name>
+    pk_url_kwarg = 'comment_id' # default: pk
+
+
+class CommentCreateView(CreateView):
+    model = Comments
+    template_name = 'comment/create.html' # default: <app_label>/<model_name>_form.html
+    form_class = CommentForm # default: ModelForm
+
+    def get_success_url(self):
+        return '/comments/'
+
+
+class CommentUpdateView(UpdateView):
+    model = Comments
+    template_name = 'comment/update.html' # default: <app_label>/<model_name>_form.html
+    form_class = CommentForm # default: ModelForm
+    pk_url_kwarg = 'comment_id' # default: pk
+
+    def get_success_url(self):
+        return '/comments/'
 
 
 def main_view(request):
@@ -243,11 +301,14 @@ def post_update_view(request, post_id):
 def hashtag_list_view(request):
     if request.method == 'GET':
         # 1 - получить все хэштеги из базы данных
-        hashtags = Hashtag.objects.all()
+        hashtags = Hashtag.objects.filter(
+            title__startswith='S'
+        )
 
         # 2 - передать хэштеги в шаблон
         context = {
             'hashtags': hashtags,
+            'message': 'Hello world!',
         }
 
         # 3 - вернуть ответ с шаблоном и данными
